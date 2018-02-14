@@ -27,7 +27,7 @@ public class OrganizationDaoImpl implements IOrganizationDao{
 			String query1 = "select * from organization";
 			PreparedStatement preparedStatement = connection.prepareStatement(query1);
 			resultSet = preparedStatement.executeQuery();
-			
+			System.out.println("hello organization");
 			while(resultSet.next()){	
 				int id = resultSet.getInt(1);
 				String name = resultSet.getString(2);
