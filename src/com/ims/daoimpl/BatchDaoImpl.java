@@ -26,6 +26,7 @@ public class BatchDaoImpl implements IBatchesDao {
 			String query1 = "select * from batches";
 			PreparedStatement preparedStatement = connection.prepareStatement(query1);
 			resultSet = preparedStatement.executeQuery();
+			System.out.println("Hello");
 			
 			while(resultSet.next()){	
 				int batch_id = resultSet.getInt(1);
