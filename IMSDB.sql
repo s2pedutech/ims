@@ -64,6 +64,7 @@ CREATE TABLE Organization
 
 INSERT INTO Organization_Details(org_id,org_estd_date,org_description,org_owner,org_address,org_contact,org_details_id) Values(0231,'2015-05-12','S2P Edutech strives to transform student to professional','Gandhar Patwardhan','Ram Nagar','9561033258',1122);
 INSERT INTO Organization_Details(org_id,org_estd_date,org_description,org_owner,org_address,org_contact,org_details_id) Values(0256,'2012-02-12','ICE GATE Academy provides intensive GATE coaching','Srinivasan Iyer','IT Park','9658432235',3344);
+
 CREATE TABLE Batches
 (
  `batch_id`         INT NOT NULL PRIMARY KEY ,
@@ -128,6 +129,7 @@ CREATE TABLE User_Roles
 
 INSERT INTO User_Roles(user_role_id,user_id,user_role_type,user_role_description) VALUES(147,1245,'Admin','Can do all important ooperations');
 INSERT INTO User_Roles (user_role_id,user_id,user_role_type,user_role_description)VALUES(258,2365,'Admin','Can do all important ooperations');
+
 CREATE TABLE Student
 (
  `student_id`         INT NOT NULL PRIMARY KEY ,
@@ -149,6 +151,7 @@ INSERT INTO Student (student_id,student_name,student_email,student_college,stude
 INSERT INTO Student (student_id,student_name,student_email,student_college,student_phone,org_id) VALUES(254,'Faisal Syed','syed.faisal@yahoo.com','S.R INSTITUTE OF TECHNOLOGY','8149091962',0231);
 INSERT INTO Student (student_id,student_name,student_email,student_college,student_phone,org_id) VALUES(846,'Sujay Modak','sujay.modak21@gmail.com','NATIONAL INSTITUTE OF TECHNOLOGY','9561023594',0256);
 INSERT INTO Student (student_id,student_name,student_email,student_college,student_phone,org_id) VALUES(965,'Rucha Balamwar','rucha.bm21@gmail.com','RAISONI INSTITUTE OF TECHNOLOGY','8446441025',0231);
+ drop table student_details;
 CREATE TABLE Student_Details
 (
  `student_details_id`       INTEGER NOT NULL PRIMARY KEY,
@@ -157,8 +160,8 @@ CREATE TABLE Student_Details
  `student_ssc_passing_year` INT NOT NULL ,
  `student_hsc_score`        DOUBLE NOT NULL ,
  `student_hsc_passing_year` INT NOT NULL ,
- `student_degree`           VARCHAR(150) NOT NULL ,
- `student_degree_status`    BOOLEAN NOT NULL ,
+ `student_degree_name`           VARCHAR(150) NOT NULL ,
+ `student_degree_passing_year`    INT NOT NULL ,
  `student_id`               INT NOT NULL ,
 `created_by`     VARCHAR(50) NULL ,
  `created_on`     DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
@@ -169,8 +172,10 @@ CREATE TABLE Student_Details
  FOREIGN KEY (`student_id`) REFERENCES Student(`student_id`)
 );
 
-INSERT INTO Student_Details(student_details_id,student_address,student_ssc_score,student_ssc_passing_year,student_hsc_score,student_hsc_passing_year,student_degree,student_degree_status,student_id) VALUES(111,'Shree Ganesh Towers',87.50,2011,70.00,2013,'Bachelor of Engineering',true,741);
-INSERT INTO Student_Details(student_details_id,student_address,student_ssc_score,student_ssc_passing_year,student_hsc_score, student_hsc_passing_year,student_degree,student_degree_status,student_id) VALUES(22,'Rajat Towers',72.50,2011,65.00,2013,'Bachelor of Engineering',false,852);
+INSERT INTO Student_Details(student_details_id,student_address,student_ssc_score,student_ssc_passing_year,student_hsc_score,student_hsc_passing_year,student_degree_name,student_degree_passing_year,student_id) VALUES(111,'Shree Ganesh Towers',87.50,2011,70.00,2013,'Bachelor of Engineering',2017,741);
+INSERT INTO Student_Details(student_details_id,student_address,student_ssc_score,student_ssc_passing_year,student_hsc_score, student_hsc_passing_year,student_degree_name,student_degree_passing_year,student_id) VALUES(22,'Rajat Towers',72.50,2011,65.00,2013,'Bachelor of Engineering',2018,852);
+
+
 CREATE TABLE Course_Enrolments
 (
  `course_fees_id` INT NOT NULL PRIMARY KEY ,
@@ -209,18 +214,19 @@ CREATE TABLE Installments
 
 INSERT INTO Installments(installment_number,amount_paid,paid_date,balance_amount,due_date,fees_status,course_fees_id) VALUES (10,2000,'2017-12-12',3500,'2018-01-25',FALSE,1561);
 INSERT INTO Installments(installment_number,amount_paid,paid_date,balance_amount,due_date,fees_status,course_fees_id) VALUES (10,6000,'2017-12-12',0,now(),TRUE,1789);
+
 alter table organization_details add org_email_id varchar(150);
-update organization_details set org_email_id='info@s2pedutech.com' where organization_details.org_id = 231;
+update Organization_Details set org_email_id='info@s2pedutech.com' where organization_details.org_id = 231;
 
-update organization_details set org_email_id='info@icegateacademy.com' where organization_details.org_id = 256;
-alter table batches add org_id integer;
+update Organization_Details set org_email_id='info@icegateacademy.com' where Organization_Details.org_id = 256;
+alter table Batches add org_id integer;
 
-alter table batches add foreign key(org_id) references organization(org_id);
+alter table Batches add foreign key(org_id) references Organization(org_id);
 
-update batches set org_id = 231 where batch_id =232;
+update Batches set org_id = 231 where batch_id =232;
 
 SELECT * from Courses;
-SELECT * from Course_details;
+SELECT * from Course_Details;
 SELECT * FROM Organization;
 SELECT * FROM Organization_Details;
 SELECT * FROM Batches;

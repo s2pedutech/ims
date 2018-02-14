@@ -8,8 +8,8 @@ public class StudentDetails {
 	public int student_ssc_passing_year;
 	public double student_hsc_score;
 	public int student_hsc_passing_year;
-	public String student_degree_type;
-	public boolean student_degree_status;
+	public String student_degree_name;
+	public int student_degree_passing_year;
 	public Student student;
 	
 	
@@ -20,7 +20,7 @@ public class StudentDetails {
 	
 	public StudentDetails(int student_details_id, String student_address, double student_ssc_score,
 			int student_ssc_passing_year, double student_hsc_score, int student_hsc_passing_year,
-			String student_degree_type, boolean student_degree_status, Student student) {
+			String student_degree_name, int student_degree_passing_year, Student student) {
 		super();
 		this.student_details_id = student_details_id;
 		this.student_address = student_address;
@@ -28,8 +28,8 @@ public class StudentDetails {
 		this.student_ssc_passing_year = student_ssc_passing_year;
 		this.student_hsc_score = student_hsc_score;
 		this.student_hsc_passing_year = student_hsc_passing_year;
-		this.student_degree_type = student_degree_type;
-		this.student_degree_status = student_degree_status;
+		this.student_degree_name = student_degree_name;
+		this.student_degree_passing_year = student_degree_passing_year;
 		this.student = student;
 	}
 	
@@ -81,20 +81,20 @@ public class StudentDetails {
 		this.student_hsc_passing_year = student_hsc_passing_year;
 	}
 	
-	public String getStudent_degree_type() {
-		return student_degree_type;
+	public String getStudent_degree_name() {
+		return student_degree_name;
 	}
 	
-	public void setStudent_degree_type(String student_degree_type) {
-		this.student_degree_type = student_degree_type;
+	public void setStudent_degree_name(String student_degree_name) {
+		this.student_degree_name = student_degree_name;
 	}
 	
-	public boolean isStudent_degree_status() {
-		return student_degree_status;
+	public int getStudent_degree_passing_year() {
+		return student_degree_passing_year;
 	}
 	
-	public void setStudent_degree_status(boolean student_degree_status) {
-		this.student_degree_status = student_degree_status;
+	public void setStudent_degree_passing_year(int student_degree_passing_year) {
+		this.student_degree_passing_year = student_degree_passing_year;
 	}
 	
 	public Student getStudent() {
@@ -110,7 +110,7 @@ public class StudentDetails {
 		return "StudentDetails [student_details_id=" + student_details_id + ", student_address=" + student_address
 				+ ", student_ssc_score=" + student_ssc_score + ", student_ssc_passing_year=" + student_ssc_passing_year
 				+ ", student_hsc_score=" + student_hsc_score + ", student_hsc_passing_year=" + student_hsc_passing_year
-				+ ", student_degree_type=" + student_degree_type + ", student_degree_status=" + student_degree_status
+				+ ", student_degree_type=" + student_degree_name + ", student_degree_passing_year=" + student_degree_passing_year
 				+ ", student=" + student + "]";
 	}
 	

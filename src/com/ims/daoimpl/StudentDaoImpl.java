@@ -73,7 +73,7 @@ public class StudentDaoImpl implements IStudentDao {
 			preparedStatement.executeUpdate();
 			
 			String query1 = "insert into student_details(student_details_id, student_address, student_ssc_score, student_ssc_passing_year,"
-					+ "student_hsc_score,student_hsc_passing_year,student_degree,student_degree_status,student_id) values (?,?,?,?,?,?,?,?,?)";
+					+ "student_hsc_score,student_hsc_passing_year,student_degree_name,student_degree_passing_year,student_id) values (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = connection.prepareStatement(query1);
 			ps.setInt(1, student.getStudent_details_id());
 			ps.setString(2, student.getStudent_address());
@@ -81,8 +81,8 @@ public class StudentDaoImpl implements IStudentDao {
 			ps.setInt(4,student.getStudent_ssc_passing_year());
 			ps.setDouble(5, student.getStudent_hsc_score());
 			ps.setInt(6, student.getStudent_hsc_passing_year());
-			ps.setString(7, student.getStudent_degree_type());
-			ps.setBoolean(8, student.isStudent_degree_status());
+			ps.setString(7, student.getStudent_degree_name());
+			ps.setInt(8, student.getStudent_degree_passing_year());
 			ps.setInt(9, student.getStudent().getStudent_id());
 			ps.executeUpdate();
 			preparedStatement.close();
