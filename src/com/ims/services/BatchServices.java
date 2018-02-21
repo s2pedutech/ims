@@ -1,10 +1,9 @@
 package com.ims.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,11 +11,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import com.ims.actions.Batches;
 import com.ims.daoimpl.BatchDaoImpl;
-import com.ims.util.DBConnectionManager;
 
 @Path("/batch")
 public class BatchServices {
@@ -37,39 +34,30 @@ public class BatchServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/newBatch")
-	public Response addBatch(Batches b){
+	public com.ims.response.Response<Batches> addBatch(Batches b){
 		
-		DBConnectionManager dbm = new DBConnectionManager();
-		
-		try {
-			Connection connection = dbm.getConnection();
-			ResultSet resultSet;
-			String sql="select * from batches where org_id='" + b.getOrg_id() + "' and batch_id'" + b.getBatch_id() + "'";
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			resultSet = preparedStatement.executeQuery();
+		com.ims.response.Response<Batches> resp ;
+		List<Batches> batchList = this.bdi.getAllData();
+		Map<String, List<?>> map = new HashMap<>();	
+		List<String> msgs = new ArrayList<>();
+		if(bdi.validateBatch(b.getOrg_id(), b.getBatch_id())){
 			
-			while(resultSet.next()){
-			int checkOid=resultSet.getInt(1);
-		    int checkBid=resultSet.getInt(2);
-		    
-		    if((checkBid==(b.getBatch_id())) && (checkOid ==(b.getOrg_id()))){
-		    	
-		    	System.out.println("Record already exists..!!");
-		    	//Response.status(406,"Record already exists.");
-
-		    	return Response.status(Response.Status.NOT_ACCEPTABLE).entity(b).build();
-		    }
-		    
-			}
-	}catch (ClassNotFoundException | SQLException e) {
-		
-		e.printStackTrace();
-	}
+			msgs.add("Batch already exists");
+			map.put("Batches", batchList);
+			resp= new com.ims.response.Response<Batches>("Not Accpetable",406,msgs,map);
+			System.out.println(resp);
+			return resp;
+		}
+		else{
+			bdi.addBatch(b);
+			msgs.add("New batch added");
+			batchList.add(b);
+			map.put("Batches", batchList);
+			resp=new com.ims.response.Response<Batches>("OK",200,msgs,map);
+			return resp;
+		}
+	
     	
-		bdi.addBatch(b);
-
-		return Response.status(Response.Status.ACCEPTED).entity(b).build();
-		
 	}
 	
 

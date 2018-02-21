@@ -5,7 +5,15 @@ public class Users {
 	public int org_id;
 	public String username;
 	public String user_password;
-	
+	public UserDetails user_details;
+	public UserDetails getUser_details() {
+		return user_details;
+	}
+
+	public void setUser_details(UserDetails ud) {
+		this.user_details = ud;
+	}
+
 	public Users(){
 		
 	}
@@ -47,9 +55,11 @@ public class Users {
 
 	@Override
 	public String toString() {
-		return "Users [user_id=" + user_id + ", username=" + username + ", user_password=" + user_password + "]";
+		return "Users [user_id=" + user_id + ", org_id=" + org_id + ", username=" + username + ", user_password="
+				+ user_password + ", user_details=" + user_details + "]";
 	}
 
+	
 	
 	
 	

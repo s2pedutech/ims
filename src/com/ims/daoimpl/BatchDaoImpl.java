@@ -58,6 +58,37 @@ public class BatchDaoImpl implements IBatchesDao {
 		return readDataFromDb();
 	}
 
+	public boolean validateBatch(int org_id,int batch_id){
+DBConnectionManager dbm = new DBConnectionManager();
+		
+		try {
+			Connection connection = dbm.getConnection();
+			ResultSet resultSet;
+			String sql="select * from batches where org_id='" + org_id + "' and batch_id'" + batch_id + "'";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+			int checkOid=resultSet.getInt(1);
+		    int checkBid=resultSet.getInt(2);
+		    
+		    if((checkBid==(batch_id)) && (checkOid ==(org_id))){
+		    	
+		    	return true;
+		    }
+		    else{
+		    	return false;
+		    }
+			}
+	}catch (ClassNotFoundException | SQLException e) {
+		
+		e.printStackTrace();
+	}
+    
+		return false;
+	}
+	
+	
 	@Override
 	public Batches addBatch(Batches b) {
 		

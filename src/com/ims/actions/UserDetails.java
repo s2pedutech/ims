@@ -5,20 +5,20 @@ public class UserDetails {
 	public String user_email_id;
 	public String user_contact;
 	public String user_address;
-	public Users user;
+	
 	
 	public UserDetails(){
 		
 	}
 
 	
-	public UserDetails(int user_details_id, String user_email_id, String user_contact, String user_address, Users user) {
+	public UserDetails(int user_details_id, String user_email_id, String user_contact, String user_address) {
 		super();
 		this.user_details_id = user_details_id;
 		this.user_email_id = user_email_id;
 		this.user_contact = user_contact;
 		this.user_address = user_address;
-		this.user = user;
+		
 	}
 
 
@@ -30,12 +30,6 @@ public class UserDetails {
 		this.user_details_id = user_details_id;
 	}
 
-	public Users getUser() {
-		return user;
-	}
-	public void setUser(Users user) {
-		this.user = user;
-	}
 	public String getUser_email_id() {
 		return user_email_id;
 	}
@@ -64,7 +58,7 @@ public class UserDetails {
 	@Override
 	public String toString() {
 		return "UserDetails [user_details_id=" + user_details_id + ", user_email_id=" + user_email_id
-				+ ", user_contact=" + user_contact + ", user_address=" + user_address + ", user=" + user + "]";
+				+ ", user_contact=" + user_contact + ", user_address=" + user_address +  "]";
 	}
 
 	

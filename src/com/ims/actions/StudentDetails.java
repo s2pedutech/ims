@@ -10,7 +10,7 @@ public class StudentDetails {
 	public int student_hsc_passing_year;
 	public String student_degree_name;
 	public int student_degree_passing_year;
-	public Student student;
+	
 	
 	
 	
@@ -20,7 +20,7 @@ public class StudentDetails {
 	
 	public StudentDetails(int student_details_id, String student_address, double student_ssc_score,
 			int student_ssc_passing_year, double student_hsc_score, int student_hsc_passing_year,
-			String student_degree_name, int student_degree_passing_year, Student student) {
+			String student_degree_name, int student_degree_passing_year) {
 		super();
 		this.student_details_id = student_details_id;
 		this.student_address = student_address;
@@ -30,7 +30,7 @@ public class StudentDetails {
 		this.student_hsc_passing_year = student_hsc_passing_year;
 		this.student_degree_name = student_degree_name;
 		this.student_degree_passing_year = student_degree_passing_year;
-		this.student = student;
+		
 	}
 	
 	public int getStudent_details_id() {
@@ -97,21 +97,14 @@ public class StudentDetails {
 		this.student_degree_passing_year = student_degree_passing_year;
 	}
 	
-	public Student getStudent() {
-		return student;
-	}
 	
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
 	@Override
 	public String toString() {
 		return "StudentDetails [student_details_id=" + student_details_id + ", student_address=" + student_address
 				+ ", student_ssc_score=" + student_ssc_score + ", student_ssc_passing_year=" + student_ssc_passing_year
 				+ ", student_hsc_score=" + student_hsc_score + ", student_hsc_passing_year=" + student_hsc_passing_year
 				+ ", student_degree_type=" + student_degree_name + ", student_degree_passing_year=" + student_degree_passing_year
-				+ ", student=" + student + "]";
+				+  "]";
 	}
 	
 	

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ims.actions.Student;
-import com.ims.actions.StudentDetails;
 import com.ims.dao.IStudentDao;
 import com.ims.util.DBConnectionManager;
 
@@ -53,9 +52,37 @@ public class StudentDaoImpl implements IStudentDao {
 		
 		return readStudentFromDb();
 	}
+	
+	public boolean validateStudent(int student_id){
+		DBConnectionManager dbm = new DBConnectionManager();
+		
+		try {
+			Connection connection = dbm.getConnection();
+			ResultSet resultSet;
+			String sql="select * from student where student_id='" + student_id + "'";
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()){
+			int checkId=resultSet.getInt(1);
+		    
+		    if(checkId==(student_id)){
+		    	return true;
+		    }
+		    else
+		    	return false;
+			}
+	}catch (ClassNotFoundException | SQLException e) {
+		
+		e.printStackTrace();
+	}
+    	
+
+		return false;
+	}
 
 	@Override
-	public StudentDetails addStudent(StudentDetails student) {
+	public Student addStudent(Student student) {
 		DBConnectionManager dbm = new DBConnectionManager();
 		
 		try {
@@ -64,26 +91,26 @@ public class StudentDaoImpl implements IStudentDao {
 			//System.out.println(user);
 			String query = "insert into student(student_id,student_name,student_email,student_college,student_phone,org_id) values(?,?,?,?,?,?)";
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1,student.getStudent().getStudent_id());
-			preparedStatement.setString(2,student.getStudent().getStudent_name());
-			preparedStatement.setString(3, student.getStudent().getStudent_email_id());
-			preparedStatement.setString(4,student.getStudent().getCollege());
-			preparedStatement.setString(5,student.getStudent().getStudent_phone());
-			preparedStatement.setInt(6, student.getStudent().getOrg_id());
+			preparedStatement.setInt(1,student.getStudent_id());
+			preparedStatement.setString(2,student.getStudent_name());
+			preparedStatement.setString(3, student.getStudent_email_id());
+			preparedStatement.setString(4,student.getCollege());
+			preparedStatement.setString(5,student.getStudent_phone());
+			preparedStatement.setInt(6, student.getOrg_id());
 			preparedStatement.executeUpdate();
 			
 			String query1 = "insert into student_details(student_details_id, student_address, student_ssc_score, student_ssc_passing_year,"
 					+ "student_hsc_score,student_hsc_passing_year,student_degree_name,student_degree_passing_year,student_id) values (?,?,?,?,?,?,?,?,?)";
 			PreparedStatement ps = connection.prepareStatement(query1);
-			ps.setInt(1, student.getStudent_details_id());
-			ps.setString(2, student.getStudent_address());
-			ps.setDouble(3, student.getStudent_ssc_score());
-			ps.setInt(4,student.getStudent_ssc_passing_year());
-			ps.setDouble(5, student.getStudent_hsc_score());
-			ps.setInt(6, student.getStudent_hsc_passing_year());
-			ps.setString(7, student.getStudent_degree_name());
-			ps.setInt(8, student.getStudent_degree_passing_year());
-			ps.setInt(9, student.getStudent().getStudent_id());
+			ps.setInt(1, student.getStudent_details().getStudent_details_id());
+			ps.setString(2, student.getStudent_details().getStudent_address());
+			ps.setDouble(3, student.getStudent_details().getStudent_ssc_score());
+			ps.setInt(4,student.getStudent_details().getStudent_ssc_passing_year());
+			ps.setDouble(5, student.getStudent_details().getStudent_hsc_score());
+			ps.setInt(6, student.getStudent_details().getStudent_hsc_passing_year());
+			ps.setString(7, student.getStudent_details().getStudent_degree_name());
+			ps.setInt(8, student.getStudent_details().getStudent_degree_passing_year());
+			ps.setInt(9, student.getStudent_id());
 			ps.executeUpdate();
 			preparedStatement.close();
 			ps.close();

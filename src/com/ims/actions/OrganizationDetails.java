@@ -9,14 +9,14 @@ public class OrganizationDetails {
 	public String org_owner;
 	public String org_address;
 	public String org_contact;
-	public Organization org;
+	
 	
 	public OrganizationDetails() {
 		
 	}
 
 	public OrganizationDetails( int org_details_id, String org_email_id, String org_estd_date,
-			String org_details, String org_owner, String org_address, String org_contact, Organization org) {
+			String org_details, String org_owner, String org_address, String org_contact) {
 		super();
 		this.org_details_id = org_details_id;
 		this.org_email_id = org_email_id;
@@ -25,7 +25,7 @@ public class OrganizationDetails {
 		this.org_owner = org_owner;
 		this.org_address = org_address;
 		this.org_contact = org_contact;
-		this.org = org;
+		
 	}
 
 	public int getOrg_details_id() {
@@ -84,19 +84,13 @@ public class OrganizationDetails {
 		this.org_contact = org_contact;
 	}
 	
-	public Organization getOrg() {
-		return org;
-	}
-
-	public void setOrg(Organization org) {
-		this.org = org;
-	}
+	
 
 	@Override
 	public String toString() {
 		return "OrganizationDetails [org_details_id=" + org_details_id + ", org_email_id=" + org_email_id
 				+ ", org_estd_date=" + org_estd_date + ", org_details=" + org_details + ", org_owner=" + org_owner
-				+ ", org_address=" + org_address + ", org_contact=" + org_contact + ", org=" + org + "]";
+				+ ", org_address=" + org_address + ", org_contact=" + org_contact +  "]";
 	}
 
 	

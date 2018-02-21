@@ -5,17 +5,16 @@ public class CourseDetails {
 		public int course_details_id;
 		public String course_contents;
 		public String course_description;
-		public Courses course;
+		
 		
 		public CourseDetails() {
 			
 		}
-		public CourseDetails(int course_details_id, String course_contents, String course_description, Courses course) {
+		public CourseDetails(int course_details_id, String course_contents, String course_description) {
 			super();
 			this.course_details_id = course_details_id;
 			this.course_contents = course_contents;
 			this.course_description = course_description;
-			this.course = course;
 		}
 		
 		public int getCourse_details_id() {
@@ -42,17 +41,11 @@ public class CourseDetails {
 			this.course_description = course_description;
 		}
 		
-		public Courses getCourse() {
-			return course;
-		}
 		
-		public void setCourse(Courses course) {
-			this.course = course;
-		}
 		@Override
 		public String toString() {
 			return "CourseDetails [course_details_id=" + course_details_id + ", course_contents=" + course_contents
-					+ ", course_description=" + course_description + ", course=" + course + "]";
+					+ ", course_description=" + course_description + "]";
 		}
 		
 		

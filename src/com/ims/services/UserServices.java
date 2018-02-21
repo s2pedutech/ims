@@ -1,11 +1,11 @@
 package com.ims.services;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,12 +13,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import com.ims.actions.UserDetails;
 import com.ims.actions.Users;
 import com.ims.daoimpl.UserDaoImpl;
-import com.ims.util.DBConnectionManager;
 
 @Path("/UserLogin")               
 public class UserServices extends Application {
@@ -28,18 +25,30 @@ public class UserServices extends Application {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/validateUser")
-	public boolean validateUserLogin(Users u)
+	public com.ims.response.Response<Users> validateUserLogin(Users u)
 	{
 		
 		System.out.println(u);
-		UserDaoImpl udi = new UserDaoImpl();
 		
 		if(udi.validateUser(u.getUsername(), u.getUser_password()))
 		{
-			return true;
+			Map<String, List<?>> m = new HashMap<>();
+			
+			List<String> msgs = new ArrayList<>();
+			msgs.add("Successful Login");
+			com.ims.response.Response<Users> r = new com.ims.response.Response<Users>("OK", 200, msgs, m);
+			System.out.println(r);
+			return r;
 		}
-		else
-			return false;
+		else{
+			Map<String, List<?>> map = new HashMap<>();
+			
+			List<String> msgs = new ArrayList<>();
+			msgs.add("Invalid Login");
+			com.ims.response.Response<Users> r1 = new com.ims.response.Response<Users>("not ok", 406, msgs, map);
+			System.out.println(r1);
+			return r1;
+		}
 		
 		
 	}
@@ -60,43 +69,28 @@ public class UserServices extends Application {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/newUser")
-	public Response addUser(UserDetails u){
-		
-		
-		DBConnectionManager dbm = new DBConnectionManager();
-		
-		try {
-			Connection connection = dbm.getConnection();
-			ResultSet resultSet;
-			String sql="select * from users where user_name='" + u.getUser().getUsername() + "' and user_password='" + u.getUser().getUser_password() + "'";
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			resultSet = preparedStatement.executeQuery();
+	public com.ims.response.Response<Users> addUser(Users u){
+		com.ims.response.Response<Users> resp ;
+		List<Users> usersList = this.udi.getAllUsers();
+		Map<String, List<?>> map = new HashMap<>();	
+		List<String> msgs = new ArrayList<>();
+		if(udi.validateUser(u.getUsername(), u.getUser_password())){
 			
-			while(resultSet.next()){
-			String checkUser=resultSet.getString(1);
-		    String checkPass=resultSet.getString(2);
-		    
-		    if(checkUser.equals(u.getUser().getUsername()) && (checkPass.equals(u.getUser().getUser_password()))){
-		    	
-		    	System.out.println("Record already exists..!!");
-		    	Response.status(406,"Record already exists. Try new username and password");
-		    	return Response.status(Response.Status.NOT_ACCEPTABLE).entity(u).build();
-		    }
-		    else{
-		    	udi.addUser(u);
-		    	
-		    }
-			}
-	}catch (ClassNotFoundException | SQLException e) {
-		
-		e.printStackTrace();
-	}
-		return Response.status(Response.Status.ACCEPTED).entity(u).build();
+			msgs.add("User already exists");
+			map.put("users", usersList);
+			resp= new com.ims.response.Response<Users>("Not Accpetable",406,msgs,map);
+			System.out.println(resp);
+			return resp;
+		}
+		else{
+			udi.addUser(u);
+			msgs.add("New user added");
+			usersList.add(u);
+			map.put("Users", usersList);
+			resp=new com.ims.response.Response<Users>("OK",200,msgs,map);
+			return resp;
+		}
 		
 	}
-	
+		
 }
-
-
-	
-

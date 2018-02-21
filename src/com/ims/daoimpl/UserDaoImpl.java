@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ims.actions.UserDetails;
 import com.ims.actions.Users;
 import com.ims.dao.IUserDao;
 import com.ims.util.DBConnectionManager;
@@ -69,12 +68,7 @@ public class UserDaoImpl implements IUserDao {
 					return true;
 				return false;
 			
-			}
-			
-			
-			
-				
-				
+			}	
 		} catch (ClassNotFoundException | SQLException e) {
 			
 			e.printStackTrace();
@@ -90,7 +84,7 @@ public class UserDaoImpl implements IUserDao {
 	}
 
 	@Override
-	public UserDetails addUser(UserDetails user) {
+	public Users addUser(Users user) {
 		DBConnectionManager dbm = new DBConnectionManager();
 	
 		try {
@@ -99,18 +93,18 @@ public class UserDaoImpl implements IUserDao {
 			//System.out.println(user);
 			String query = "insert into users(user_name,user_password,org_id,user_id) values(?,?,?,?)";
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, user.getUser().getUsername());
-			preparedStatement.setString(2, user.getUser().getUser_password());
-			preparedStatement.setInt(3, user.getUser().getOrg_id());
-			preparedStatement.setInt(4, user.getUser().getUser_id());
+			preparedStatement.setString(1, user.getUsername());
+			preparedStatement.setString(2, user.getUser_password());
+			preparedStatement.setInt(3, user.getOrg_id());
+			preparedStatement.setInt(4, user.getUser_id());
 			preparedStatement.executeUpdate();
 			String query1 = "insert into user_details(user_details_id,user_contact, user_address, user_id,user_email_id) values (?,?,?,?,?)";
 			PreparedStatement ps = connection.prepareStatement(query1);
-			ps.setInt(1,user.getUser_details_id());
-			ps.setString(2,user.getUser_contact());
-			ps.setString(3,user.getUser_address());
-			ps.setInt(4,user.getUser().getUser_id());
-			ps.setString(5, user.getUser_email_id());
+			ps.setInt(1,user.getUser_details().getUser_details_id());
+			ps.setString(2,user.getUser_details().getUser_contact());
+			ps.setString(3,user.getUser_details().getUser_address());
+			ps.setInt(4,user.getUser_id());
+			ps.setString(5, user.getUser_details().getUser_email_id());
 			ps.executeUpdate();
 			preparedStatement.close();
 			ps.close();

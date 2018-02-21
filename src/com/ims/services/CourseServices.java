@@ -1,10 +1,9 @@
 package com.ims.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,12 +11,10 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import com.ims.actions.CourseDetails;
 import com.ims.actions.Courses;
 import com.ims.daoimpl.CourseDaoImpl;
-import com.ims.util.DBConnectionManager;
+
 
 @Path("/course")
 public class CourseServices {
@@ -27,10 +24,15 @@ public class CourseServices {
 	@Path("/allCourses")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Courses> getAllData() {
+	public com.ims.response.Response<Courses> getAllData() {
 		List<Courses> cList = this.cdi.getAllData();
 
-		return cList;
+		Map<String, List<?>> m = new HashMap<>();
+		m.put("courses", cList);
+		List<String> msgs = new ArrayList<>();
+		com.ims.response.Response<Courses> r = new com.ims.response.Response<Courses>("OK", 200, msgs, m);
+		System.out.println(r);
+		return r;
 	}	
 	
 
@@ -38,36 +40,32 @@ public class CourseServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/newCourse")
-	public Response addCourse(CourseDetails cr){
+	public com.ims.response.Response<Courses> addCourse(Courses cr){
 		
-		DBConnectionManager dbm = new DBConnectionManager();
-		
-		try {
-			Connection connection = dbm.getConnection();
-			ResultSet resultSet;
-			String sql="select * from courses where course_id='" + cr.getCourse().getCourse_id() + "'";
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
-			resultSet = preparedStatement.executeQuery();
+		com.ims.response.Response<Courses> resp ;
+		List<Courses> courseList = this.cdi.getAllData();
+		Map<String, List<?>> map = new HashMap<>();	
+		List<String> msgs = new ArrayList<>();
+		if(cdi.validateCourse(cr.getCourse_id())){
 			
-			while(resultSet.next()){
-			int checkId=resultSet.getInt(1);
-		    
-		    if(checkId==(cr.getCourse().getCourse_id())){
-		    	
-		    	System.out.println("Record already exists..!!");
-
-		    	return Response.status(Response.Status.NOT_ACCEPTABLE).entity(cr).build();
-		    }
-		    
-			}
-	}catch (ClassNotFoundException | SQLException e) {
-		
-		e.printStackTrace();
-	}
+			msgs.add("Course ID already exists");
+			map.put("Courses", courseList);
+			resp= new com.ims.response.Response<Courses>("Not Accpetable",406,msgs,map);
+			System.out.println(resp);
+			return resp;
+		}
+		else{
+			cdi.addCourse(cr);
+			msgs.add("New course added");
+			courseList.add(cr);
+			map.put("Courses", courseList);
+			resp=new com.ims.response.Response<Courses>("OK",200,msgs,map);
+			return resp;
+		}
+	
     	
-		cdi.addCourse(cr);
+		
 
-		return Response.status(Response.Status.ACCEPTED).entity(cr).build();
 		
 	}
 }

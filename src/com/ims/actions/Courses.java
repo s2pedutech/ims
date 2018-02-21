@@ -7,6 +7,7 @@ public class Courses {
 	public String course_duration;
 	public double course_fees;
 	
+	public CourseDetails course_details;
 	
 	
 	public Courses() {
@@ -19,6 +20,8 @@ public class Courses {
 		this.course_name = course_name;
 		this.course_duration = course_duration;
 		this.course_fees = course_fees;
+		//this.course_details=course_details;
+		
 	}
 	
 	public int getCourse_id() {
@@ -53,11 +56,21 @@ public class Courses {
 		this.course_fees = course_fees;
 	}
 
+	public CourseDetails getCourse_details() {
+		return course_details;
+	}
+
+	public void setCourse_details(CourseDetails course_details) {
+		this.course_details = course_details;
+	}
+
 	@Override
 	public String toString() {
 		return "Courses [course_id=" + course_id + ", course_name=" + course_name + ", course_duration="
-				+ course_duration + ", course_fees=" + course_fees + "]";
+				+ course_duration + ", course_fees=" + course_fees + ", course_details=" + course_details + "]";
 	}
+
+	
 	
 	
 }
